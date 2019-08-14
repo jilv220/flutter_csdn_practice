@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'CupertinoRoute.dart';
-import 'NewRoute.dart';
-import 'TipRoute.dart';
-import 'Styles.dart';
+import 'package:flutter_app/routes/CupertinoRoute.dart';
+import 'package:flutter_app/routes/NewRoute.dart';
+import 'package:flutter_app/routes/SwitchAndCheckBoxTestRoute.dart';
+import 'package:flutter_app/routes/TipRoute.dart';
+import 'package:flutter_app/res/Styles.dart';
 
 
 //main 之前可以自定义异常捕获
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
         "new_page" : (context) => NewRoute(),
         "tip_page" : (context) => TipRoute(),
         "cupertino_page" : (context) => CupertinoRoute(),
+        "switch_and_checkbox_test_page" : (context) => SwitchAndCheckBoxTestRoute(),
       },
     );
   }
@@ -61,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Text(
               'You have pushed the button this many times:',
-              style: Styles().style1,
+              style: Styles.style1,
             ),
             Text(
               '$_counter',
@@ -88,6 +90,10 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 Navigator.of(context).pushNamed("cupertino_page");
               },
+            ),
+            OutlineButton(
+              child: Text("打开test界面"),
+              onPressed: () => Navigator.of(context).pushNamed("switch_and_checkbox_test_page"),
             ),
           ],
         ),

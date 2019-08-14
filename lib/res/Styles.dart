@@ -2,7 +2,7 @@
 
 class Styles {
 
- var style1 = TextStyle(
+ static var style1 = TextStyle(
      color: Colors.blue,
      fontSize: 18.0,
      height: 1.2,
