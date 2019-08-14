@@ -21,10 +21,10 @@ class AlignRoute extends StatelessWidget {
             Container(
               child: Text("Hello world",style: TextStyle(color: Colors.white)),
               color: Colors.red,
-              key: Key("what"),
             ),
             Container(
               alignment: Alignment.centerRight,
+              padding: EdgeInsets.all(10),
               child: Text("I am Jack hhhhh"),
             ),
             Container(
