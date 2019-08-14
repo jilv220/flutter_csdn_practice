@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_app/routes/AlignRoute.dart';
 import 'package:flutter_app/routes/CupertinoRoute.dart';
 import 'package:flutter_app/routes/NewRoute.dart';
 import 'package:flutter_app/routes/SwitchAndCheckBoxTestRoute.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         "tip_page" : (context) => TipRoute(),
         "cupertino_page" : (context) => CupertinoRoute(),
         "switch_and_checkbox_test_page" : (context) => SwitchAndCheckBoxTestRoute(),
+        "align_route_page" :(context) => AlignRoute(),
       },
     );
   }
@@ -94,6 +96,10 @@ class _MyHomePageState extends State<MyHomePage> {
             OutlineButton(
               child: Text("打开test界面"),
               onPressed: () => Navigator.of(context).pushNamed("switch_and_checkbox_test_page"),
+            ),
+            OutlineButton(
+              child: Text("测试constraint"),
+              onPressed: () => Navigator.of(context).pushNamed("align_route_page"),
             ),
           ],
         ),
