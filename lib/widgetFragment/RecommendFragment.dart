@@ -13,7 +13,7 @@ class _RecommendFragmentState extends State<RecommendFragment> {
 
   JokeModel _jokeModel;
   bool isLoadMore = false;
-  ScrollController _scrollController = new ScrollController();
+  ScrollController _scrollController = new ScrollController(keepScrollOffset: true);
 
   var numItems = 20 ;
   final _titleSize = const TextStyle(fontSize: 18);
@@ -23,6 +23,8 @@ class _RecommendFragmentState extends State<RecommendFragment> {
   void initState() {
     super.initState();
     _scrollController.addListener(() {
+
+      //pullToLoadMore
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
         loadMore();
       }
@@ -55,19 +57,21 @@ class _RecommendFragmentState extends State<RecommendFragment> {
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: loadData,
-        child: ListView.builder(
-          itemCount: actualItem ,
-          padding: EdgeInsets.all(4.0),
-          itemBuilder: (BuildContext context, int i) {
-            if (_jokeModel != null && i.isEven) {
-              return _buildRow(i ~/ 2);
-            } else if (i.isOdd){
-              return Divider();
-            } else {
-              return _buildPlaceholder(i);
-            }
-            },
-          controller: _scrollController,
+        child: Scrollbar(
+            child: ListView.builder(
+              itemCount: actualItem ,
+              padding: EdgeInsets.all(4.0),
+              itemBuilder: (BuildContext context, int i) {
+                if (_jokeModel != null && i.isEven) {
+                  return _buildRow(i ~/ 2);
+                } else if (i.isOdd){
+                  return Divider();
+                } else {
+                  return _buildPlaceholder(i);
+                }
+              },
+              controller: _scrollController,
+            ),
         ),
       ),
     );
