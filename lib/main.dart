@@ -57,23 +57,23 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: new BottomNavigationBar(
           items: <BottomNavigationBarItem>[
             new BottomNavigationBarItem(
-                icon: Icon(Icons.home),
+                icon: ImageIcon(AssetImage("assets/Icons/MainPage.png")),
                 title: Text("首页"),
             ),
             new BottomNavigationBarItem(
-              icon: Icon(Icons.crop),
+              icon: ImageIcon(AssetImage("assets/Icons/Study.png")),
               title: Text("学习"),
             ),
             new BottomNavigationBarItem(
-              icon: Icon(Icons.place),
+              icon: ImageIcon(AssetImage("assets/Icons/Blink.png")),
               title: Text("Blink"),
             ),
             new BottomNavigationBarItem(
-              icon: Icon(Icons.message),
+              icon: ImageIcon(AssetImage("assets/Icons/Forum.png")),
               title: Text("论坛"),
             ),
             new BottomNavigationBarItem(
-              icon: Icon(Icons.my_location),
+              icon: Icon(Icons.person),
               title: Text("我的"),
             ),
           ],
