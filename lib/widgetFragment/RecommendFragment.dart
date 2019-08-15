@@ -16,7 +16,6 @@ class _RecommendFragmentState extends State<RecommendFragment> {
   ScrollController _scrollController = new ScrollController();
 
   var numItems = 20 ;
-  List<ListTile> moreList = [];
   final _titleSize = const TextStyle(fontSize: 18);
   final _subSize = const TextStyle(fontSize: 12);
 
@@ -33,6 +32,8 @@ class _RecommendFragmentState extends State<RecommendFragment> {
 
   @override
   Widget build(BuildContext context) {
+
+    var actualItem = numItems * 2;
 
     Widget _buildRow(int i) {
       return ListTile(
@@ -55,7 +56,7 @@ class _RecommendFragmentState extends State<RecommendFragment> {
       body: RefreshIndicator(
         onRefresh: loadData,
         child: ListView.builder(
-          itemCount: numItems * 2 ,
+          itemCount: actualItem ,
           padding: EdgeInsets.all(4.0),
           itemBuilder: (BuildContext context, int i) {
             if (_jokeModel != null && i.isEven) {
@@ -69,14 +70,13 @@ class _RecommendFragmentState extends State<RecommendFragment> {
           controller: _scrollController,
         ),
       ),
-
     );
   }
 
   Future loadData() async {
     Response response;
     Dio dio = new Dio();
-    response = await dio.post("https://api.apiopen.top/getJoke",data: {"type": "text", "page" : "1", "count" : "50"});
+    response = await dio.post("https://api.apiopen.top/getJoke",data: {"type": "text", "page" : "1", "count" : "20"});
     //print(response.toString());
     Map<String,dynamic> json = jsonDecode(response.toString());
 
@@ -86,12 +86,19 @@ class _RecommendFragmentState extends State<RecommendFragment> {
   }
 
   Future loadMore() async {
+    Response response;
+    Dio dio = new Dio();
+    response = await dio.post("https://api.apiopen.top/getJoke",data: {"type": "text", "page" : "1", "count" : "10"});
+    //print(response.toString());
+    Map<String,dynamic> json = jsonDecode(response.toString());
 
     if (!isLoadMore) {
       setState(() => isLoadMore = true);
 
       setState(() {
-        //numItems += 5;
+        numItems += 5;// setState load data, or the data will not be saved
+        _jokeModel.result.addAll(JokeModel.fromJson(json).result);
+        isLoadMore = false;
       });
     }
   }
