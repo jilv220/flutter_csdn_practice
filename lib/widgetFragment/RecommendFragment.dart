@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_app/model/JokeModel.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 
 class RecommendFragment extends StatefulWidget {
   @override
@@ -29,6 +30,7 @@ class _RecommendFragmentState extends State<RecommendFragment> {
         loadMore();
       }
     });
+
     loadData();
   }
 
@@ -54,6 +56,35 @@ class _RecommendFragmentState extends State<RecommendFragment> {
       );
     }
 
+    Widget _swiperBuilder(BuildContext context, int index) {
+      return (Image.network(
+        "http://via.placeholder.com/350x150",
+        fit: BoxFit.fill,
+      ));
+    }
+
+    Widget _buildBanner() {
+      return Container(
+          width: MediaQuery.of(context).size.width,
+          height: 200.0,
+          child: Swiper(
+            itemBuilder: _swiperBuilder, //配置滑动
+            itemCount: 3,
+            pagination: new SwiperPagination(
+                builder: RectSwiperPaginationBuilder(
+                  color: Colors.black54,
+                  activeColor: Colors.white,
+                )),
+            control: new SwiperControl(
+              iconPrevious: null,    //配置前后翻页icon
+              iconNext: null,
+            ),
+            scrollDirection: Axis.horizontal,
+            autoplay: true,
+            onTap: (index) => print('点击了第$index个'),
+          ));
+    }
+
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: loadData,
@@ -62,9 +93,14 @@ class _RecommendFragmentState extends State<RecommendFragment> {
               itemCount: actualItem ,
               padding: EdgeInsets.all(4.0),
               itemBuilder: (BuildContext context, int i) {
-                if (_jokeModel != null && i.isEven) {
+                if (i == 0) {
+                  return _buildBanner();  // list的第一个元素为banner
+                } else if (i == 1) {
+                  return Divider(height: 0.0);
+                }
+                else if (_jokeModel != null && i.isEven) {
                   return _buildRow(i ~/ 2);
-                } else if (i.isOdd){
+                } else if (i.isOdd && i != 1){
                   return Divider();
                 } else {
                   return _buildPlaceholder(i);
