@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         "/": (context) => MyHomePage(),
-        "new_page" : (context) => NewRoute(),
+        "new_page" : (context) => MainRoute(),
         "tip_page" : (context) => TipRoute(),
         "cupertino_page" : (context) => CupertinoRoute(),
         "switch_and_checkbox_test_page" : (context) => SwitchAndCheckBoxTestRoute(),
@@ -41,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   int _currentIndex = 0;
   final List<Widget> bottomBarViews = [
-    NewRoute(),
+    MainRoute(),
     TipRoute(),
     AlignRoute(),
     CupertinoRoute(),

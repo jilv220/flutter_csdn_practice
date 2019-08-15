@@ -1,24 +1,29 @@
+import 'package:dio/dio.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_app/model/JokeModel.dart';
 import 'package:flutter_app/widgetFragment/JavaFragment.dart';
 import 'package:flutter_app/widgetFragment/ProgramFragment.dart';
 import 'package:flutter_app/widgetFragment/PythonFragment.dart';
 import 'package:flutter_app/widgetFragment/RecommendFragment.dart';
 
-class NewRoute extends StatefulWidget {
+class MainRoute extends StatefulWidget {
   @override
-  _NewRouteState createState() => _NewRouteState();
+  _MainRouteState createState() => _MainRouteState();
 }
 
-class _NewRouteState extends State<NewRoute> with SingleTickerProviderStateMixin {
+class _MainRouteState extends State<MainRoute> with SingleTickerProviderStateMixin {
 
   TabController _tabController;
+  JokeModel _jokeModel;
   List tabs = ["推荐","关注","程序人生","Python","Java"];
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: tabs.length,vsync: this);   //ticker must be init in initState()
+    loadRecommend();
   }
 
   @override
@@ -60,7 +65,7 @@ class _NewRouteState extends State<NewRoute> with SingleTickerProviderStateMixin
       body: TabBarView(
         controller: _tabController,
         children: <Widget>[
-          RecommendFragment(),
+          RecommendFragment(jokeModel: _jokeModel),
           Text("haha"),
           ProgramFragment(),
           PythonFragment(),
@@ -70,4 +75,17 @@ class _NewRouteState extends State<NewRoute> with SingleTickerProviderStateMixin
     );
   }
 
+  void loadRecommend() async {
+
+    Response response;
+    Dio dio = new Dio();
+    response = await dio.post("https://api.apiopen.top/getJoke",data: {"type": "text", "page" : "1", "count" : "20"});
+    //print(response.toString());
+    Map<String,dynamic> json = jsonDecode(response.toString());
+
+    setState(() {
+      _jokeModel = JokeModel.fromJson(json);
+    });
+
+  }
 }
