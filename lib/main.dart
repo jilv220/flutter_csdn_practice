@@ -5,9 +5,6 @@ import 'package:flutter_app/routes/CupertinoRoute.dart';
 import 'package:flutter_app/routes/NewRoute.dart';
 import 'package:flutter_app/routes/SwitchAndCheckBoxTestRoute.dart';
 import 'package:flutter_app/routes/TipRoute.dart';
-import 'package:flutter_app/widgetFragment/EntertainFragment.dart';
-import 'package:flutter_app/widgetFragment/HistoryFragment.dart';
-import 'package:flutter_app/widgetFragment/NewsFragment.dart';
 
 //main 之前可以自定义异常捕获
 void main() => runApp(MyApp());
@@ -40,18 +37,16 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin {
+class _MyHomePageState extends State<MyHomePage> {
 
-  List tabs = ["新闻","娱乐","历史"];
-  List<Tab> tabList = [];
-  List<Container> tabViews = [];
-  TabController _tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: tabs.length,vsync: this);
-  }
+  int _currentIndex = 0;
+  final List<Widget> bottomBarViews = [
+    NewRoute(),
+    TipRoute(),
+    AlignRoute(),
+    CupertinoRoute(),
+    SwitchAndCheckBoxTestRoute()
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -73,18 +68,39 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
             ),
         ),
         ),
-        bottom: TabBar(
-          tabs: tabs.map((element) => Tab(text: element,)).toList(),
-          controller: _tabController,
-        ),
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children:<Widget> [
-          NewsFragment(),
-          EntertainFragment(),
-          HistoryFragment(),
-        ]
+      body: bottomBarViews[_currentIndex],
+      bottomNavigationBar: new BottomNavigationBar(
+          items: <BottomNavigationBarItem>[
+            new BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                title: Text("首页"),
+            ),
+            new BottomNavigationBarItem(
+              icon: Icon(Icons.crop),
+              title: Text("学习"),
+            ),
+            new BottomNavigationBarItem(
+              icon: Icon(Icons.place),
+              title: Text("Blink"),
+            ),
+            new BottomNavigationBarItem(
+              icon: Icon(Icons.message),
+              title: Text("论坛"),
+            ),
+            new BottomNavigationBarItem(
+              icon: Icon(Icons.my_location),
+              title: Text("我的"),
+            ),
+          ],
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.red,
+        currentIndex: _currentIndex,
+        onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+        },
       ),
     );
   }

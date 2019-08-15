@@ -6,7 +6,6 @@ class TipRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    String text = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
       appBar : AppBar(
@@ -17,7 +16,7 @@ class TipRoute extends StatelessWidget {
         child: Center(
           child: Column(
             children: <Widget>[
-              Text(text),
+              Text("haha"),
               RaisedButton(
                 onPressed: () => Navigator.pop(context,"我是返回值"), // navigator.pop 返回之前route
                 child: Text("返回"),
