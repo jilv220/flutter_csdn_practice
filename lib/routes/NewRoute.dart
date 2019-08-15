@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_app/widgetFragment/JavaFragment.dart';
+import 'package:flutter_app/widgetFragment/ProgramFragment.dart';
+import 'package:flutter_app/widgetFragment/PythonFragment.dart';
+import 'package:flutter_app/widgetFragment/RecommendFragment.dart';
 
 class NewRoute extends StatefulWidget {
   @override
@@ -9,7 +13,7 @@ class NewRoute extends StatefulWidget {
 class _NewRouteState extends State<NewRoute> with SingleTickerProviderStateMixin {
 
   TabController _tabController;
-  List tabs = ["新闻","娱乐","历史"];
+  List tabs = ["推荐","关注","程序人生","Python","Java"];
 
   @override
   void initState() {
@@ -25,35 +29,42 @@ class _NewRouteState extends State<NewRoute> with SingleTickerProviderStateMixin
         title: ConstrainedBox(constraints: BoxConstraints(maxHeight: 30,maxWidth: 300),
           child: TextField(
             decoration: InputDecoration(
-                hintText: "搜索",
+                hintText: "搜索博文/帖子/用户",
                 hintStyle: TextStyle(
                   fontSize: 15,
                 ),
                 prefixIcon: Icon(
                   Icons.search ,
-                  size: 25,
+                  size: 18,
                 ),
-                contentPadding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                contentPadding: EdgeInsets.symmetric(vertical: 4.0),
                 border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10))
-                )
+                    borderRadius: BorderRadius.all(Radius.circular(8))
+                ),
             ),
           ),
         ),
         bottom:  PreferredSize(
             child: TabBar(
+              isScrollable: true,
               tabs: tabs.map((element) => Tab(text: element,)).toList(),
               controller: _tabController,
               indicatorColor: Colors.red,
             ),
-            preferredSize: Size.fromHeight(40)),
+            preferredSize: Size.fromHeight(40)
+        ),
+        actions: <Widget>[
+          Padding(padding: EdgeInsets.fromLTRB(0, 0, 20, 0),child: ImageIcon(AssetImage("assets/Icons/2dCode.png")),)  // 2dCode
+        ],
       ),
       body: TabBarView(
         controller: _tabController,
         children: <Widget>[
+          RecommendFragment(),
           Text("haha"),
-          Text("haha"),
-          Text("haha"),
+          ProgramFragment(),
+          PythonFragment(),
+          JavaFragment(),
         ],
       ),
     );
