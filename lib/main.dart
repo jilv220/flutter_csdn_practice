@@ -52,23 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: AppBar(
-        title: ConstrainedBox(constraints: BoxConstraints(maxHeight: 30),
-          child: TextField(
-            decoration: InputDecoration(
-            labelText: "  搜索",
-            labelStyle: TextStyle(
-              fontSize: 15,
-            ),
-            prefixIcon: Icon(Icons.search),
-            contentPadding: EdgeInsets.symmetric(vertical: 10.0),
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(25))
-            )
-            ),
-        ),
-        ),
-      ),
+      appBar: null,
       body: bottomBarViews[_currentIndex],
       bottomNavigationBar: new BottomNavigationBar(
           items: <BottomNavigationBarItem>[
