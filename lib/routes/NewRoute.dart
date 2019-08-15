@@ -84,7 +84,7 @@ class _MainRouteState extends State<MainRoute> with SingleTickerProviderStateMix
     Map<String,dynamic> json = jsonDecode(response.toString());
 
     setState(() {
-      _jokeModel = JokeModel.fromJson(json);
+      _jokeModel = JokeModel.fromJson(json);  // setState load data, or the data will not be saved
     });
 
   }

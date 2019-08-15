@@ -29,7 +29,10 @@ class _RecommendFragmentState extends State<RecommendFragment> {
     Widget _buildRow(int i) {
       return ListTile(
         title: Text(widget.jokeModel.result[i].name,style: _titleSize),
-        subtitle: Text(widget.jokeModel.result[i].text,style: _subSize),
+        subtitle: Padding(
+          padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+          child: Text(widget.jokeModel.result[i].text,style: _subSize),
+        ),
       );
     }
     Widget _buildPlaceholder(int i) {
@@ -40,14 +43,17 @@ class _RecommendFragmentState extends State<RecommendFragment> {
     }
 
     return ListView.builder(
-        itemCount: numItems,
+        itemCount: numItems * 2 ,
         padding: EdgeInsets.all(4.0),
         itemBuilder: (BuildContext context, int i) {
-          if (widget.jokeModel != null) {
-            return _buildRow(i);
+          if (widget.jokeModel != null && i.isEven) {
+            return _buildRow(i ~/ 2);
+          } else if (i.isOdd){
+            return Divider();
           } else {
             return _buildPlaceholder(i);
           }
-        });
+        }
+        );
   }
 }
