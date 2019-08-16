@@ -20,6 +20,7 @@ class _RecommendFragmentState extends State<RecommendFragment> {
   var numItems = 20 ;
   final _titleSize = const TextStyle(fontSize: 18);
   final _subSize = const TextStyle(fontSize: 12);
+  List<Widget> imageList = List();
 
   @override
   void initState() {
@@ -32,6 +33,7 @@ class _RecommendFragmentState extends State<RecommendFragment> {
       }
     });
 
+    loadImage();
     loadData();
   }
 
@@ -58,10 +60,7 @@ class _RecommendFragmentState extends State<RecommendFragment> {
     }
 
     Widget _swiperBuilder(BuildContext context, int index) {
-      return (Image.network(
-        "http://via.placeholder.com/350x150",
-        fit: BoxFit.fill,
-      ));
+      return imageList[index];
     }
 
     Widget _buildBanner() {
@@ -127,7 +126,6 @@ class _RecommendFragmentState extends State<RecommendFragment> {
   }
 
   Future refreshData() async {
-
     NetRequest.post("https://api.apiopen.top/getJoke", {"type": "text", "page" : "1", "count" : "$numItems"},
 
         onSuccess:(response) {
@@ -155,6 +153,18 @@ class _RecommendFragmentState extends State<RecommendFragment> {
           }
         },
         onFailure:(error) {});
+  }
+
+  void loadImage() {
+    imageList.add(Image.network(
+        'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2726034926,4129010873&fm=26&gp=0.jpg',
+        fit: BoxFit.fill));
+    imageList.add(Image.network(
+        'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3485348007,2192172119&fm=26&gp=0.jpg',
+        fit: BoxFit.fill));
+    imageList.add(Image.network(
+        'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2594792439,969125047&fm=26&gp=0.jpg',
+        fit: BoxFit.fill));
   }
 
   @override
