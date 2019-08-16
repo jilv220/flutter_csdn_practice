@@ -27,7 +27,7 @@ class _RecommendFragmentState extends State<RecommendFragment> {
 
       //pullToLoadMore
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
-        loadMore();
+        loadMore(5);
       }
     });
 
@@ -87,7 +87,7 @@ class _RecommendFragmentState extends State<RecommendFragment> {
 
     return Scaffold(
       body: RefreshIndicator(
-        onRefresh: loadData,
+        onRefresh: refreshData,
         child: Scrollbar(
             child: ListView.builder(
               itemCount: actualItem ,
@@ -116,7 +116,7 @@ class _RecommendFragmentState extends State<RecommendFragment> {
   Future loadData() async {
     Response response;
     Dio dio = new Dio();
-    response = await dio.post("https://api.apiopen.top/getJoke",data: {"type": "text", "page" : "1", "count" : "20"});
+    response = await dio.post("https://api.apiopen.top/getJoke",data: {"type": "text", "page" : "1", "count" : "$numItems"});
     //print(response.toString());
     Map<String,dynamic> json = jsonDecode(response.toString());
 
@@ -125,7 +125,20 @@ class _RecommendFragmentState extends State<RecommendFragment> {
     });
   }
 
-  Future loadMore() async {
+  Future refreshData() async {
+    Response response;
+    Dio dio = new Dio();
+    response = await dio.post("https://api.apiopen.top/getJoke",data: {"type": "text", "page" : "1", "count" : "$numItems"});
+    //print(response.toString());
+    Map<String,dynamic> json = jsonDecode(response.toString());
+
+    setState(() {
+      _jokeModel = JokeModel.fromJson(json);  // setState load data, or the data will not be saved
+      numItems = 20;    // reset the numItems
+    });
+  }
+
+  Future loadMore(int item) async {
     Response response;
     Dio dio = new Dio();
     response = await dio.post("https://api.apiopen.top/getJoke",data: {"type": "text", "page" : "1", "count" : "10"});
@@ -133,10 +146,9 @@ class _RecommendFragmentState extends State<RecommendFragment> {
     Map<String,dynamic> json = jsonDecode(response.toString());
 
     if (!isLoadMore) {
-      setState(() => isLoadMore = true);
 
       setState(() {
-        numItems += 5;// setState load data, or the data will not be saved
+        numItems += item;// setState load data, or the data will not be saved
         _jokeModel.result.addAll(JokeModel.fromJson(json).result);
         isLoadMore = false;
       });
