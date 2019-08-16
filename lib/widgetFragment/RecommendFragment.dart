@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_app/builder/ListViewBuilder.dart';
 import 'package:flutter_app/model/JokeModel.dart';
 import 'package:flutter_app/net/NetRequest.dart';
+import 'package:flutter_app/net/NetRequestEnum.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
 class RecommendFragment extends StatefulWidget {
@@ -14,7 +15,7 @@ class _RecommendFragmentState extends State<RecommendFragment> with AutomaticKee
 
   JokeModel _jokeModel;
   bool isLoadMore = false;
-  ScrollController _scrollController = new ScrollController(keepScrollOffset: true);
+  ScrollController _scrollController = new ScrollController();
 
   var numItems = 20 ;
   final _titleSize = const TextStyle(fontSize: 18);
@@ -37,24 +38,8 @@ class _RecommendFragmentState extends State<RecommendFragment> with AutomaticKee
   }
 
   @override
+  // ignore: must_call_super
   Widget build(BuildContext context) {
-
-    Widget _buildRow(int i) {
-      return ListTile(
-        title: Text(_jokeModel.result[i].name,style: _titleSize),
-        subtitle: Padding(
-          padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-          child: Text(_jokeModel.result[i].text,style: _subSize),
-        ),
-      );
-    }
-
-    Widget _buildPlaceholder(int i) {
-      return ListTile(
-        title: Text("加载中...",style: _titleSize,textAlign: TextAlign.center),
-        subtitle: Text("",style: _subSize),
-      );
-    }
 
     Widget _swiperBuilder(BuildContext context, int index) {
       return imageList[index];
@@ -103,8 +88,30 @@ class _RecommendFragmentState extends State<RecommendFragment> with AutomaticKee
     );
   }
 
+
+
+  Widget _buildRow(int i) {
+    return ListTile(
+      title: Text(_jokeModel.result[i].name,style: _titleSize),
+      subtitle: Padding(
+        padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+        child: Text(_jokeModel.result[i].text,style: _subSize),
+      ),
+    );
+  }
+
+  Widget _buildPlaceholder(int i) {
+    return ListTile(
+      title: Text("加载中...",style: _titleSize,textAlign: TextAlign.center),
+      subtitle: Text("",style: _subSize),
+    );
+  }
+
   void loadData() {
-    NetRequest.post("https://api.apiopen.top/getJoke", {"type": "text", "page" : "1", "count" : "$numItems"},
+
+    Map<String,String> params = {"type": "text", "page" : "1", "count" : "$numItems"};
+
+    NetRequest.post(NetRequestEnum.GET_JOKES, params,
 
         onSuccess:(response) {
 
@@ -116,7 +123,10 @@ class _RecommendFragmentState extends State<RecommendFragment> with AutomaticKee
   }
 
   Future refreshData() async {
-    NetRequest.post("https://api.apiopen.top/getJoke", {"type": "text", "page" : "1", "count" : "$numItems"},
+
+    Map<String,String> params = {"type": "text", "page" : "1", "count" : "$numItems"};
+
+    NetRequest.post(NetRequestEnum.GET_JOKES, params,
 
         onSuccess:(response) {
 
@@ -129,7 +139,10 @@ class _RecommendFragmentState extends State<RecommendFragment> with AutomaticKee
   }
 
   Future loadMore(int item) async {
-    NetRequest.post("https://api.apiopen.top/getJoke", {"type": "text", "page" : "1", "count" : "10"},
+
+    Map<String,String> params = {"type": "text", "page" : "1", "count" : "10"};
+
+    NetRequest.post(NetRequestEnum.GET_JOKES, params,
 
         onSuccess:(response) {
 

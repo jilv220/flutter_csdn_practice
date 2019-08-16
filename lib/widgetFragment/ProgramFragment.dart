@@ -7,7 +7,9 @@ class ProgramFragment extends StatefulWidget {
   _ProgramFragmentState createState() => _ProgramFragmentState();
 }
 
-class _ProgramFragmentState extends State<ProgramFragment> implements BaseListViewFragment {
+class _ProgramFragmentState extends State<ProgramFragment>
+    with AutomaticKeepAliveClientMixin
+    implements BaseListViewFragment{
 
   @override
   Widget build(BuildContext context) {
@@ -53,5 +55,20 @@ class _ProgramFragmentState extends State<ProgramFragment> implements BaseListVi
 
     return null;
   }
+
+  @override
+  Widget buildPlaceholder(int i) {
+
+    return null;
+  }
+
+  @override
+  Widget buildRow(int i) {
+
+    return null;
+  }
+
+  @override
+  bool get wantKeepAlive => true;
 
 }

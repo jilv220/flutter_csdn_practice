@@ -7,15 +7,16 @@ class BaseListViewFragment {
 
   Widget build(BuildContext context) {
 
-    Widget _buildRow(int i) {
-      return ListTile();
-    }
-
-    Widget _buildPlaceholder(int i) {
-      return ListTile();
-    }
-
     return Scaffold();
+  }
+
+
+  Widget buildRow(int i) {
+    return ListTile();
+  }
+
+  Widget buildPlaceholder(int i) {
+    return ListTile();
   }
 
   Future refreshData() async {
