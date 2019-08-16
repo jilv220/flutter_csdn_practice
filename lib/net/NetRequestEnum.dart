@@ -1,5 +1,0 @@
-
-enum NetRequest {
-  GET,
-  POST
-}
