@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_app/builder/ListViewBuilder.dart';
@@ -17,7 +19,7 @@ class _RecommendFragmentState extends State<RecommendFragment> with AutomaticKee
   bool isLoadMore = false;
   ScrollController _scrollController = new ScrollController();
 
-  var numItems = 20 ;
+  var numItems = 20;
   final _titleSize = const TextStyle(fontSize: 18);
   final _subSize = const TextStyle(fontSize: 12);
   List<Widget> imageList = List();
@@ -89,6 +91,10 @@ class _RecommendFragmentState extends State<RecommendFragment> with AutomaticKee
   }
 
   Widget _buildRow(int i) {
+
+    int randomNum = Random.secure().nextInt(1000);
+    int randomNum2 = Random.secure().nextInt(100);
+
     return ListTile(
       title: Text(_jokeModel.result[i].name,style: _titleSize),
       subtitle: Padding(
@@ -121,12 +127,12 @@ class _RecommendFragmentState extends State<RecommendFragment> with AutomaticKee
                     width: 5,
                     height: 10,
                   ),
-                  Text("100"),
+                  Text("$randomNum"),
                   Container(
                     width: 18,
                     height: 10,
                   ),
-                  Text("评论 5"),
+                  Text("评论 $randomNum2"),
                 ],
               ),
             )
