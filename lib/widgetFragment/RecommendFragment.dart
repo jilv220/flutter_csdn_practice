@@ -10,7 +10,7 @@ class RecommendFragment extends StatefulWidget {
   _RecommendFragmentState createState() => _RecommendFragmentState();
 }
 
-class _RecommendFragmentState extends State<RecommendFragment> {
+class _RecommendFragmentState extends State<RecommendFragment> with AutomaticKeepAliveClientMixin{
 
   JokeModel _jokeModel;
   bool isLoadMore = false;
@@ -162,4 +162,7 @@ class _RecommendFragmentState extends State<RecommendFragment> {
     super.dispose();
     _scrollController.dispose();
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

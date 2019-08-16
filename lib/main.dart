@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_app/routes/AlignRoute.dart';
 import 'package:flutter_app/routes/CupertinoRoute.dart';
-import 'package:flutter_app/routes/NewRoute.dart';
+import 'package:flutter_app/routes/MainRoute.dart';
 import 'package:flutter_app/routes/SwitchAndCheckBoxTestRoute.dart';
 import 'package:flutter_app/routes/TipRoute.dart';
 
