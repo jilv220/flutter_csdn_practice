@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_app/frameworkDart/BaseListViewFragment.dart';
 
 class ProgramFragment extends StatefulWidget {
   @override
   _ProgramFragmentState createState() => _ProgramFragmentState();
-
 }
 
-class _ProgramFragmentState extends State<ProgramFragment> {
+class _ProgramFragmentState extends State<ProgramFragment> implements BaseListViewFragment {
 
   @override
   Widget build(BuildContext context) {
@@ -31,4 +31,27 @@ class _ProgramFragmentState extends State<ProgramFragment> {
           return _buildRow(i);
         });
   }
+
+  @override
+  void loadData() {
+
+  }
+
+  @override
+  void loadImage() {
+
+  }
+
+  @override
+  Future loadMore(int item) {
+
+    return null;
+  }
+
+  @override
+  Future refreshData() {
+
+    return null;
+  }
+
 }

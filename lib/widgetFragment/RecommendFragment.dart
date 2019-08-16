@@ -1,7 +1,6 @@
-import 'dart:convert';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_app/builder/ListViewBuilder.dart';
 import 'package:flutter_app/model/JokeModel.dart';
 import 'package:flutter_app/net/NetRequest.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -29,7 +28,7 @@ class _RecommendFragmentState extends State<RecommendFragment> {
 
       //pullToLoadMore
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
-        loadMore(5);
+        loadMore(10);
       }
     });
 
@@ -39,8 +38,6 @@ class _RecommendFragmentState extends State<RecommendFragment> {
 
   @override
   Widget build(BuildContext context) {
-
-    var actualItem = numItems * 2;
 
     Widget _buildRow(int i) {
       return ListTile(
@@ -90,21 +87,14 @@ class _RecommendFragmentState extends State<RecommendFragment> {
         onRefresh: refreshData,
         child: Scrollbar(
             child: ListView.builder(
-              itemCount: actualItem ,
+              itemCount: numItems ,
               padding: EdgeInsets.all(4.0),
               itemBuilder: (BuildContext context, int i) {
-                if (i == 0) {
-                  return _buildBanner();  // list的第一个元素为banner
-                } else if (i == 1) {
-                  return Divider(height: 0.0);
-                }
-                else if (_jokeModel != null && i.isEven) {
-                  return _buildRow(i ~/ 2);
-                } else if (i.isOdd && i != 1){
-                  return Divider();
-                } else {
-                  return _buildPlaceholder(i);
-                }
+
+                return ListViewBuilder.build(i, _jokeModel,
+                    buildRow: _buildRow,
+                    buildPlaceholder: _buildPlaceholder,
+                    buildBanner: _buildBanner);
               },
               controller: _scrollController,
             ),

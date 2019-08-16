@@ -1,3 +1,4 @@
+
 class JokeModel {
   int code;
   String message;
