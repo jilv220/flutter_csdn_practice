@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_app/model/JokeModel.dart';
+import 'package:flutter_app/net/NetRequest.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
 class RecommendFragment extends StatefulWidget {
@@ -113,46 +114,47 @@ class _RecommendFragmentState extends State<RecommendFragment> {
     );
   }
 
-  Future loadData() async {
-    Response response;
-    Dio dio = new Dio();
-    response = await dio.post("https://api.apiopen.top/getJoke",data: {"type": "text", "page" : "1", "count" : "$numItems"});
-    //print(response.toString());
-    Map<String,dynamic> json = jsonDecode(response.toString());
+  void loadData() {
+    NetRequest.post("https://api.apiopen.top/getJoke", {"type": "text", "page" : "1", "count" : "$numItems"},
 
-    setState(() {
-      _jokeModel = JokeModel.fromJson(json);  // setState load data, or the data will not be saved
-    });
+        onSuccess:(response) {
+
+          setState(() {
+            _jokeModel = JokeModel.fromJson(response);  // setState load data, or the data will not be saved
+          });
+        },
+        onFailure:(error) {});
   }
 
   Future refreshData() async {
-    Response response;
-    Dio dio = new Dio();
-    response = await dio.post("https://api.apiopen.top/getJoke",data: {"type": "text", "page" : "1", "count" : "$numItems"});
-    //print(response.toString());
-    Map<String,dynamic> json = jsonDecode(response.toString());
 
-    setState(() {
-      _jokeModel = JokeModel.fromJson(json);  // setState load data, or the data will not be saved
-      numItems = 20;    // reset the numItems
-    });
+    NetRequest.post("https://api.apiopen.top/getJoke", {"type": "text", "page" : "1", "count" : "$numItems"},
+
+        onSuccess:(response) {
+
+          setState(() {
+            _jokeModel = JokeModel.fromJson(response);  // setState load data, or the data will not be saved
+            numItems = 20;    // reset the numItems
+          });
+        },
+        onFailure:(error) {});
   }
 
   Future loadMore(int item) async {
-    Response response;
-    Dio dio = new Dio();
-    response = await dio.post("https://api.apiopen.top/getJoke",data: {"type": "text", "page" : "1", "count" : "10"});
-    //print(response.toString());
-    Map<String,dynamic> json = jsonDecode(response.toString());
+    NetRequest.post("https://api.apiopen.top/getJoke", {"type": "text", "page" : "1", "count" : "10"},
 
-    if (!isLoadMore) {
+        onSuccess:(response) {
 
-      setState(() {
-        numItems += item;// setState load data, or the data will not be saved
-        _jokeModel.result.addAll(JokeModel.fromJson(json).result);
-        isLoadMore = false;
-      });
-    }
+          if (!isLoadMore) {
+
+            setState(() {
+              numItems += item;// setState load data, or the data will not be saved
+              _jokeModel.result.addAll(JokeModel.fromJson(response).result);
+              isLoadMore = false;
+            });
+          }
+        },
+        onFailure:(error) {});
   }
 
   @override
