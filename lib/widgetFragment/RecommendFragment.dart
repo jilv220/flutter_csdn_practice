@@ -88,8 +88,6 @@ class _RecommendFragmentState extends State<RecommendFragment> with AutomaticKee
     );
   }
 
-
-
   Widget _buildRow(int i) {
     return ListTile(
       title: Text(_jokeModel.result[i].name,style: _titleSize),

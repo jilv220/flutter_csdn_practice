@@ -30,8 +30,4 @@ class BaseListViewFragment {
   Future loadMore(int item) async {
 
   }
-
-  void loadImage() {
-
-  }
 }
