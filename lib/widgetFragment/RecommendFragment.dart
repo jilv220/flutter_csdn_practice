@@ -93,7 +93,45 @@ class _RecommendFragmentState extends State<RecommendFragment> with AutomaticKee
       title: Text(_jokeModel.result[i].name,style: _titleSize),
       subtitle: Padding(
         padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-        child: Text(_jokeModel.result[i].text,style: _subSize),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(_jokeModel.result[i].text,style: _subSize),
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+              child: Row(
+                children: <Widget>[
+                  Icon(Icons.account_circle),
+                  Container(
+                    width: 5,
+                    height: 10,
+                  ),
+                  Text("玉米地最菜码农"),
+                  Container(
+                    width: 18,
+                    height: 10,
+                  ),
+                  Text("8月16日"),
+                  Container(
+                    width: 18,
+                    height: 10,
+                  ),
+                  Icon(Icons.remove_red_eye),
+                  Container(
+                    width: 5,
+                    height: 10,
+                  ),
+                  Text("100"),
+                  Container(
+                    width: 18,
+                    height: 10,
+                  ),
+                  Text("评论 5"),
+                ],
+              ),
+            )
+          ],
+        )
       ),
     );
   }
