@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_app/builder/ListViewBuilder.dart';
 import 'package:flutter_app/model/JokeModel.dart';
 import 'package:flutter_app/net/NetRequest.dart';
 import 'package:flutter_app/net/NetRequestEnum.dart';
+import 'package:flutter_app/widgets/BottomIconListTile.dart';
 
 class ProgramFragment extends StatefulWidget {
   @override
@@ -21,6 +24,7 @@ class _ProgramFragmentState extends State<ProgramFragment>
   final _titleSize = const TextStyle(fontSize: 18);
   final _subSize = const TextStyle(fontSize: 12);
   List<Widget> imageList = List();
+  List<Widget> tileList = List();
 
   @override
   void initState() {
@@ -33,6 +37,7 @@ class _ProgramFragmentState extends State<ProgramFragment>
       }
     });
 
+    initListTile();
     loadData();
   }
 
@@ -122,13 +127,45 @@ class _ProgramFragmentState extends State<ProgramFragment>
 
   Widget _buildRow(int i) {
 
-    return ListTile(
-      title: Text(_jokeModel.result[i].name,style: _titleSize),
-      subtitle: Padding(
-        padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-        child: Text(_jokeModel.result[i].text,style: _subSize),
-      ),
+    return BottomIconListTile(
+      titleContent: _jokeModel.result[i].name,
+      titleStyle: _titleSize,
+      subtitleContent: _jokeModel.result[i].text,
+      subtitleStyle: _subSize,
+      subtitlePadding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+      iconPadding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+      bottomIconContent: tileList,
     );
+  }
+
+  void initListTile() {
+
+    tileList = [Icon(Icons.account_circle),
+      Container(
+        width: 5,
+        height: 10,
+      ),
+      Text("玉米地最菜码农"),
+      Container(
+        width: 18,
+        height: 10,
+      ),
+      Text("8月16日"),
+      Container(
+        width: 18,
+        height: 10,
+      ),
+      Icon(Icons.remove_red_eye),
+      Container(
+        width: 5,
+        height: 10,
+      ),
+      Text("0"),
+      Container(
+        width: 18,
+        height: 10,
+      ),
+      Text("评论 0")];
   }
 
   @override

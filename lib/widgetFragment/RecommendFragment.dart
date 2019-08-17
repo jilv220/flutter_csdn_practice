@@ -6,6 +6,7 @@ import 'package:flutter_app/builder/ListViewBuilder.dart';
 import 'package:flutter_app/model/JokeModel.dart';
 import 'package:flutter_app/net/NetRequest.dart';
 import 'package:flutter_app/net/NetRequestEnum.dart';
+import 'package:flutter_app/widgets/BottomIconListTile.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
 class RecommendFragment extends StatefulWidget {
@@ -23,6 +24,7 @@ class _RecommendFragmentState extends State<RecommendFragment> with AutomaticKee
   final _titleSize = const TextStyle(fontSize: 18);
   final _subSize = const TextStyle(fontSize: 12);
   List<Widget> imageList = List();
+  List<Widget> tileList = List();
 
   @override
   void initState() {
@@ -35,6 +37,7 @@ class _RecommendFragmentState extends State<RecommendFragment> with AutomaticKee
       }
     });
 
+    initListTile();
     loadImage();
     loadData();
   }
@@ -91,54 +94,14 @@ class _RecommendFragmentState extends State<RecommendFragment> with AutomaticKee
   }
 
   Widget _buildRow(int i) {
-
-    int randomNum = Random.secure().nextInt(1000);
-    int randomNum2 = Random.secure().nextInt(100);
-
-    return ListTile(
-      title: Text(_jokeModel.result[i].name,style: _titleSize),
-      subtitle: Padding(
-        padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(_jokeModel.result[i].text,style: _subSize),
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-              child: Row(
-                children: <Widget>[
-                  Icon(Icons.account_circle),
-                  Container(
-                    width: 5,
-                    height: 10,
-                  ),
-                  Text("玉米地最菜码农"),
-                  Container(
-                    width: 18,
-                    height: 10,
-                  ),
-                  Text("8月16日"),
-                  Container(
-                    width: 18,
-                    height: 10,
-                  ),
-                  Icon(Icons.remove_red_eye),
-                  Container(
-                    width: 5,
-                    height: 10,
-                  ),
-                  Text("$randomNum"),
-                  Container(
-                    width: 18,
-                    height: 10,
-                  ),
-                  Text("评论 $randomNum2"),
-                ],
-              ),
-            )
-          ],
-        )
-      ),
+    return BottomIconListTile(
+      titleContent: _jokeModel.result[i].name,
+      titleStyle: _titleSize,
+      subtitleContent: _jokeModel.result[i].text,
+      subtitleStyle: _subSize,
+      subtitlePadding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+      iconPadding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+      bottomIconContent: tileList,
     );
   }
 
@@ -147,6 +110,36 @@ class _RecommendFragmentState extends State<RecommendFragment> with AutomaticKee
       title: Text("加载中...",style: _titleSize,textAlign: TextAlign.center),
       subtitle: Text("",style: _subSize),
     );
+  }
+
+  void initListTile() {
+
+    tileList = [Icon(Icons.account_circle),
+    Container(
+    width: 5,
+    height: 10,
+    ),
+    Text("玉米地最菜码农"),
+    Container(
+    width: 18,
+    height: 10,
+    ),
+    Text("8月16日"),
+    Container(
+    width: 18,
+    height: 10,
+    ),
+    Icon(Icons.remove_red_eye),
+    Container(
+    width: 5,
+    height: 10,
+    ),
+    Text("0"),
+    Container(
+    width: 18,
+    height: 10,
+    ),
+    Text("评论 0")];
   }
 
   void loadData() {
