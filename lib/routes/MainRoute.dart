@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_app/frameworkDart/ViewModelProvider.dart';
+import 'package:flutter_app/viewModel/ProgramFragmentViewModel.dart';
 import 'package:flutter_app/viewModel/RecommendFragmentViewModel.dart';
 import 'package:flutter_app/widgetFragment/JavaFragment.dart';
 import 'package:flutter_app/widgetFragment/ProgramFragment.dart';
@@ -67,7 +68,10 @@ class _MainRouteState extends State<MainRoute> with SingleTickerProviderStateMix
             child: RecommendFragment(),
           ),
           Text("haha"),
-          ProgramFragment(),
+          ViewModelProvider(
+              viewModel: ProgramFragmentViewModel(),
+              child: ProgramFragment(),
+          ),
           PythonFragment(),
           JavaFragment(),
         ],

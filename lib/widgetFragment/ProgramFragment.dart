@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_app/builder/ListViewBuilder.dart';
+import 'package:flutter_app/frameworkDart/ViewModelProvider.dart';
 import 'package:flutter_app/model/JokeModel.dart';
-import 'package:flutter_app/net/NetRequest.dart';
-import 'package:flutter_app/net/NetRequestEnum.dart';
+import 'package:flutter_app/viewModel/ProgramFragmentViewModel.dart';
 import 'package:flutter_app/widgets/BottomIconListTile.dart';
 
 class ProgramFragment extends StatefulWidget {
@@ -14,11 +14,9 @@ class ProgramFragment extends StatefulWidget {
 class _ProgramFragmentState extends State<ProgramFragment>
     with AutomaticKeepAliveClientMixin {
 
-  JokeModel _jokeModel;
-  bool isLoadMore = false;
   ScrollController _scrollController = new ScrollController();
+  ProgramFragmentViewModel _viewModel;
 
-  var numItems = 20 ;
   final _titleSize = const TextStyle(fontSize: 18);
   final _subSize = const TextStyle(fontSize: 12);
   List<Widget> imageList = List();
@@ -31,12 +29,13 @@ class _ProgramFragmentState extends State<ProgramFragment>
 
       //pullToLoadMore
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
-        loadMore(10);
+        _viewModel.loadMore(10);
       }
     });
 
     initListTile();
-    loadData();
+    _viewModel = ViewModelProvider.of(context);
+    _viewModel.init(context);
   }
 
   @override
@@ -44,88 +43,45 @@ class _ProgramFragmentState extends State<ProgramFragment>
   Widget build(BuildContext context) {
 
     return Scaffold(
-      body: RefreshIndicator(
-        onRefresh: refreshData,
-        child: Scrollbar(
-          child: ListView.builder(
-            itemCount: numItems ,
-            padding: EdgeInsets.all(4.0),
-            itemBuilder: (BuildContext context, int i) {
-              return null;
-            },
-            controller: _scrollController,
-          ),
-        ),
-      ),
+        body: StreamBuilder(
+            stream: _viewModel.dataStream,
+            builder: (BuildContext context, AsyncSnapshot<JokeModel> snapshot) {
+
+              if(!snapshot.hasData) {
+                return Center(child: CircularProgressIndicator());
+              }
+
+              return RefreshIndicator(
+                onRefresh: _viewModel.refreshData,
+                child: Scrollbar(
+                  child: ListView.separated(
+                    itemCount: _viewModel.numItems,
+                    padding: EdgeInsets.all(4.0),
+                    separatorBuilder: (BuildContext context, int i) {
+                      if (i > 1) {
+                        return Divider(color: Colors.grey);
+                      } else {
+                        return Divider(height: 0.0);
+                      }
+                    },
+                    itemBuilder: (BuildContext context, int i) {
+
+                      return ListViewBuilder<JokeModel>().build(i, snapshot, buildRow: _buildRow);
+                    },
+                    controller: _scrollController,
+                  ),
+                ),
+              );
+            }
+        )
     );
   }
 
-  void loadData() {
-
-    Map<String,String> params = {"type": "text", "page" : "1", "count" : "$numItems"};
-
-    NetRequest.post(NetRequestEnum.GET_JOKES, params,
-
-        onSuccess:(response) {
-
-          setState(() {
-            _jokeModel = JokeModel.fromJson(response);  // setState load data, or the data will not be saved
-          });
-        },
-        onFailure:(error) {});
-  }
-
-  Future loadMore(int item) async {
-
-    Map<String,String> params = {"type": "text", "page" : "1", "count" : "10"};
-
-    NetRequest.post(NetRequestEnum.GET_JOKES, params,
-
-        onSuccess:(response) {
-
-          if (!isLoadMore) {
-
-            setState(() {
-              numItems += item;// setState load data, or the data will not be saved
-              _jokeModel.result.addAll(JokeModel.fromJson(response).result);
-              isLoadMore = false;
-            });
-          }
-        },
-        onFailure:(error) {});
-  }
-
-
-  Future refreshData() async{
-
-    Map<String,String> params = {"type": "text", "page" : "1", "count" : "$numItems"};
-
-    NetRequest.post(NetRequestEnum.GET_JOKES, params,
-
-        onSuccess:(response) {
-
-          setState(() {
-            _jokeModel = JokeModel.fromJson(response);  // setState load data, or the data will not be saved
-            numItems = 20;    // reset the numItems
-          });
-        },
-        onFailure:(error) {});
-  }
-
-
-  Widget _buildPlaceholder(int i) {
-    return ListTile(
-      title: Text("加载中...",style: _titleSize,textAlign: TextAlign.center),
-      subtitle: Text("",style: _subSize),
-    );
-  }
-
-  Widget _buildRow(int i) {
-
+  Widget _buildRow(int i, AsyncSnapshot<JokeModel> snapshot) {
     return BottomIconListTile(
-      titleContent: _jokeModel.result[i].name,
+      titleContent: snapshot.data.result[i].name,
       titleStyle: _titleSize,
-      subtitleContent: _jokeModel.result[i].text,
+      subtitleContent: snapshot.data.result[i].text,
       subtitleStyle: _subSize,
       subtitlePadding: EdgeInsets.fromLTRB(0, 10, 0, 0),
       iconPadding: EdgeInsets.fromLTRB(0, 10, 0, 0),
@@ -161,6 +117,14 @@ class _ProgramFragmentState extends State<ProgramFragment>
         height: 10,
       ),
       Text("评论 0")];
+  }
+
+
+  @override
+  void dispose() {
+    super.dispose();
+    _viewModel.dispose();
+    _scrollController.dispose();
   }
 
   @override

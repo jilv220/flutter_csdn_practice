@@ -12,7 +12,8 @@ class RecommendFragment extends StatefulWidget {
   _RecommendFragmentState createState() => _RecommendFragmentState();
 }
 
-class _RecommendFragmentState extends State<RecommendFragment> with AutomaticKeepAliveClientMixin{
+class _RecommendFragmentState extends State<RecommendFragment>
+    with AutomaticKeepAliveClientMixin{
 
   ScrollController _scrollController = new ScrollController();
   RecommendFragmentViewModel _viewModel;
@@ -36,7 +37,7 @@ class _RecommendFragmentState extends State<RecommendFragment> with AutomaticKee
     initListTile();
     initImage();
     _viewModel = ViewModelProvider.of(context);
-    _viewModel.doInit(context);
+    _viewModel.init(context);
   }
 
   @override
@@ -95,10 +96,7 @@ class _RecommendFragmentState extends State<RecommendFragment> with AutomaticKee
                   },
                   itemBuilder: (BuildContext context, int i) {
 
-                    return ListViewBuilder<JokeModel>()
-                        .build(i, snapshot,
-                        buildRow: _buildRow,
-                        buildBanner: _buildBanner);
+                    return ListViewBuilder<JokeModel>().build(i, snapshot, buildRow: _buildRow, buildBanner: _buildBanner);
                   },
                   controller: _scrollController,
                 ),

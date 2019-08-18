@@ -6,7 +6,7 @@ class ViewModelProvider<T extends BaseViewModel> extends StatefulWidget {
   final T viewModel;
   final Widget child;
 
-  const ViewModelProvider({
+  ViewModelProvider({
     Key key,
     @required this.viewModel,
     @required this.child
