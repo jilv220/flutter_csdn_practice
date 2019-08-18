@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_app/builder/ListViewBuilder.dart';
@@ -53,10 +51,7 @@ class _ProgramFragmentState extends State<ProgramFragment>
             itemCount: numItems ,
             padding: EdgeInsets.all(4.0),
             itemBuilder: (BuildContext context, int i) {
-
-              return ListViewBuilder.build(i, _jokeModel,
-                  buildRow: _buildRow,
-                  buildPlaceholder: _buildPlaceholder);
+              return null;
             },
             controller: _scrollController,
           ),
@@ -170,5 +165,4 @@ class _ProgramFragmentState extends State<ProgramFragment>
 
   @override
   bool get wantKeepAlive => true;
-
 }

@@ -1,11 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_app/builder/ListViewBuilder.dart';
+import 'package:flutter_app/frameworkDart/ViewModelProvider.dart';
 import 'package:flutter_app/model/JokeModel.dart';
-import 'package:flutter_app/net/NetRequest.dart';
-import 'package:flutter_app/net/NetRequestEnum.dart';
+import 'package:flutter_app/viewModel/RecommendFragmentViewModel.dart';
 import 'package:flutter_app/widgets/BottomIconListTile.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
@@ -16,11 +14,9 @@ class RecommendFragment extends StatefulWidget {
 
 class _RecommendFragmentState extends State<RecommendFragment> with AutomaticKeepAliveClientMixin{
 
-  JokeModel _jokeModel;
-  bool isLoadMore = false;
   ScrollController _scrollController = new ScrollController();
+  RecommendFragmentViewModel _viewModel;
 
-  var numItems = 20;
   final _titleSize = const TextStyle(fontSize: 18);
   final _subSize = const TextStyle(fontSize: 12);
   List<Widget> imageList = List();
@@ -33,18 +29,21 @@ class _RecommendFragmentState extends State<RecommendFragment> with AutomaticKee
 
       //pullToLoadMore
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
-        loadMore(10);
+        _viewModel.loadMore(10);
       }
     });
 
     initListTile();
-    loadImage();
-    loadData();
+    initImage();
+    _viewModel = ViewModelProvider.of(context);
+    _viewModel.doInit(context);
   }
 
   @override
   // ignore: must_call_super
   Widget build(BuildContext context) {
+
+   // print("build!");
 
     Widget _swiperBuilder(BuildContext context, int index) {
       return imageList[index];
@@ -73,42 +72,52 @@ class _RecommendFragmentState extends State<RecommendFragment> with AutomaticKee
     }
 
     return Scaffold(
-      body: RefreshIndicator(
-        onRefresh: refreshData,
-        child: Scrollbar(
-            child: ListView.builder(
-              itemCount: numItems ,
-              padding: EdgeInsets.all(4.0),
-              itemBuilder: (BuildContext context, int i) {
+      body: StreamBuilder(
+          stream: _viewModel.dataStream,
+          builder: (BuildContext context, AsyncSnapshot<JokeModel> snapshot) {
 
-                return ListViewBuilder.build(i, _jokeModel,
-                    buildRow: _buildRow,
-                    buildPlaceholder: _buildPlaceholder,
-                    buildBanner: _buildBanner);
-              },
-              controller: _scrollController,
-            ),
-        ),
-      ),
+            if(!snapshot.hasData) {
+              return Center(child: CircularProgressIndicator());
+            }
+
+            return RefreshIndicator(
+              onRefresh: _viewModel.refreshData,
+              child: Scrollbar(
+                child: ListView.separated(
+                  itemCount: _viewModel.numItems,
+                  padding: EdgeInsets.all(4.0),
+                  separatorBuilder: (BuildContext context, int i) {
+                    if (i > 1) {
+                      return Divider(color: Colors.grey);
+                    } else {
+                      return Divider(height: 0.0);
+                    }
+                  },
+                  itemBuilder: (BuildContext context, int i) {
+
+                    return ListViewBuilder<JokeModel>()
+                        .build(i, snapshot,
+                        buildRow: _buildRow,
+                        buildBanner: _buildBanner);
+                  },
+                  controller: _scrollController,
+                ),
+              ),
+            );
+          }
+      )
     );
   }
 
-  Widget _buildRow(int i) {
+  Widget _buildRow(int i, AsyncSnapshot<JokeModel> snapshot) {
     return BottomIconListTile(
-      titleContent: _jokeModel.result[i].name,
+      titleContent: snapshot.data.result[i].name,
       titleStyle: _titleSize,
-      subtitleContent: _jokeModel.result[i].text,
+      subtitleContent: snapshot.data.result[i].text,
       subtitleStyle: _subSize,
       subtitlePadding: EdgeInsets.fromLTRB(0, 10, 0, 0),
       iconPadding: EdgeInsets.fromLTRB(0, 10, 0, 0),
       bottomIconContent: tileList,
-    );
-  }
-
-  Widget _buildPlaceholder(int i) {
-    return ListTile(
-      title: Text("加载中...",style: _titleSize,textAlign: TextAlign.center),
-      subtitle: Text("",style: _subSize),
     );
   }
 
@@ -142,58 +151,7 @@ class _RecommendFragmentState extends State<RecommendFragment> with AutomaticKee
     Text("评论 0")];
   }
 
-  void loadData() {
-
-    Map<String,String> params = {"type": "text", "page" : "1", "count" : "$numItems"};
-
-    NetRequest.post(NetRequestEnum.GET_JOKES, params,
-
-        onSuccess:(response) {
-
-          setState(() {
-            _jokeModel = JokeModel.fromJson(response);  // setState load data, or the data will not be saved
-          });
-        },
-        onFailure:(error) {});
-  }
-
-  Future refreshData() async {
-
-    Map<String,String> params = {"type": "text", "page" : "1", "count" : "$numItems"};
-
-    NetRequest.post(NetRequestEnum.GET_JOKES, params,
-
-        onSuccess:(response) {
-
-          setState(() {
-            _jokeModel = JokeModel.fromJson(response);  // setState load data, or the data will not be saved
-            numItems = 20;    // reset the numItems
-          });
-        },
-        onFailure:(error) {});
-  }
-
-  Future loadMore(int item) async {
-
-    Map<String,String> params = {"type": "text", "page" : "1", "count" : "10"};
-
-    NetRequest.post(NetRequestEnum.GET_JOKES, params,
-
-        onSuccess:(response) {
-
-          if (!isLoadMore) {
-
-            setState(() {
-              numItems += item;// setState load data, or the data will not be saved
-              _jokeModel.result.addAll(JokeModel.fromJson(response).result);
-              isLoadMore = false;
-            });
-          }
-        },
-        onFailure:(error) {});
-  }
-
-  void loadImage() {
+  void initImage() {
     imageList.add(Image.network(
         'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2726034926,4129010873&fm=26&gp=0.jpg',
         fit: BoxFit.fill));
@@ -208,6 +166,7 @@ class _RecommendFragmentState extends State<RecommendFragment> with AutomaticKee
   @override
   void dispose() {
     super.dispose();
+    _viewModel.dispose();
     _scrollController.dispose();
   }
 

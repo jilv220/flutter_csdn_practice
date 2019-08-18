@@ -49,9 +49,7 @@ class _PythonFragmentState extends State<PythonFragment>
             padding: EdgeInsets.all(4.0),
             itemBuilder: (BuildContext context, int i) {
 
-              return ListViewBuilder.build(i, _jokeModel,
-                  buildRow: _buildRow,
-                  buildPlaceholder: _buildPlaceholder);
+              return null;
             },
             controller: _scrollController,
           ),

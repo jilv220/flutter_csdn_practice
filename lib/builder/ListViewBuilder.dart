@@ -1,21 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/model/JokeModel.dart';
 
-class ListViewBuilder {
+class ListViewBuilder<T> {
 
-  static Widget build(int index,JokeModel model,{buildPlaceholder(int index), buildRow(int index), buildBanner()}) {
+  Widget build(int index,AsyncSnapshot<T> snapshot,{buildRow(int index,AsyncSnapshot<T> snapshot), buildBanner()}) {
 
     if (index == 0 && buildBanner != null) {
       return buildBanner();
     } else if (index == 1) {
       return Divider(height: 0.0);
     }
-    else if (model != null && index.isEven) {
-      return buildRow(index);
-    } else if (index.isOdd && index != 1){
-      return Divider();
-    } else {
-      return buildPlaceholder(index);
+    else if (snapshot.hasData) {
+      return buildRow(index,snapshot);
     }
   }
 }

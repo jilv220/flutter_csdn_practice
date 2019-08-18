@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_app/frameworkDart/ViewModelProvider.dart';
+import 'package:flutter_app/viewModel/RecommendFragmentViewModel.dart';
 import 'package:flutter_app/widgetFragment/JavaFragment.dart';
 import 'package:flutter_app/widgetFragment/ProgramFragment.dart';
 import 'package:flutter_app/widgetFragment/PythonFragment.dart';
@@ -60,7 +62,10 @@ class _MainRouteState extends State<MainRoute> with SingleTickerProviderStateMix
       body: TabBarView(
         controller: _tabController,
         children: <Widget>[
-          RecommendFragment(),
+          ViewModelProvider(
+            viewModel: RecommendFragmentViewModel(),
+            child: RecommendFragment(),
+          ),
           Text("haha"),
           ProgramFragment(),
           PythonFragment(),

@@ -27,6 +27,7 @@ dependencies:
   provider: ^3.0.0
   flutter_swiper: ^1.1.6
   shared_preferences: ^0.5.3+4
+  rxdart: ^0.22.1+1
 
 dev_dependencies:
   flutter_test:
