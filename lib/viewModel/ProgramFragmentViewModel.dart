@@ -11,12 +11,12 @@ class ProgramFragmentViewModel extends BaseViewModel {
   var isLoadMore = false;
   JokeModel jokeModel;
 
-  BehaviorSubject<JokeModel> _dataObservable = BehaviorSubject();
-  Stream<JokeModel> get dataStream => _dataObservable.stream;
+  BehaviorSubject<JokeModel> dataObservable = BehaviorSubject();
+  Stream<JokeModel> get dataStream => dataObservable.stream;
 
   @override
   void dispose() {
-    _dataObservable.close();
+    //_dataObservable.close();
   }
 
   @override
@@ -33,7 +33,8 @@ class ProgramFragmentViewModel extends BaseViewModel {
         onSuccess:(response) {
           jokeModel = JokeModel.fromJson(response);
           //print(jokeModel.result.length);
-          _dataObservable.add(jokeModel);
+          dataObservable.add(jokeModel);
+          numItems = 20;
         },
         onFailure:(error) {});
   }
@@ -45,13 +46,12 @@ class ProgramFragmentViewModel extends BaseViewModel {
     NetRequest.post(NetRequestEnum.GET_JOKES, params,
 
         onSuccess:(response) {
-
           if (!isLoadMore) {
 
-            numItems += item;// setState load data, or the data will not be saved
+            numItems += item;
             //print("$numItems");
             jokeModel.result.addAll(JokeModel.fromJson(response).result);
-            _dataObservable.add(jokeModel);
+            dataObservable.add(jokeModel);
             isLoadMore = false;
           }
         },

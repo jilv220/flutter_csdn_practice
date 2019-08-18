@@ -82,6 +82,8 @@ class _MainRouteState extends State<MainRoute> with SingleTickerProviderStateMix
   @override
   void dispose() {
     super.dispose();
+    RecommendFragmentViewModel().dataObservable.close();
+    ProgramFragmentViewModel().dataObservable.close();
     _tabController.dispose();
   }
 }
