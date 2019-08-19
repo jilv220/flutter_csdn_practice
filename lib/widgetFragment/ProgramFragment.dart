@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_app/builder/ListViewBuilder.dart';
 import 'package:flutter_app/frameworkDart/ViewModelProvider.dart';
 import 'package:flutter_app/model/JokeModel.dart';
-import 'package:flutter_app/viewModel/ProgramFragmentViewModel.dart';
+import 'package:flutter_app/viewModel/JokeFragmentViewModel.dart';
 import 'package:flutter_app/widgets/BottomIconListTile.dart';
 
 class ProgramFragment extends StatefulWidget {
@@ -15,7 +15,7 @@ class _ProgramFragmentState extends State<ProgramFragment>
     with AutomaticKeepAliveClientMixin {
 
   ScrollController _scrollController = new ScrollController();
-  ProgramFragmentViewModel _viewModel;
+  JokeFragmentViewModel _viewModel;
 
   final _titleSize = const TextStyle(fontSize: 18);
   final _subSize = const TextStyle(fontSize: 12);

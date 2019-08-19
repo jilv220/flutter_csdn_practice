@@ -74,7 +74,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       appBar: null,
-      body: pages[_currentIndex],
+      body: IndexedStack(
+        children: pages,
+        index: _currentIndex,
+      ),
       bottomNavigationBar: new BottomNavigationBar(
         items:bottomNavItems,
         type: BottomNavigationBarType.fixed,

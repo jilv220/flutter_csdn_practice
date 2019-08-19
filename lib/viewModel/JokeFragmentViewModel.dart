@@ -5,7 +5,7 @@ import 'package:flutter_app/net/NetRequest.dart';
 import 'package:flutter_app/net/NetRequestEnum.dart';
 import 'package:rxdart/rxdart.dart';
 
-class ProgramFragmentViewModel extends BaseViewModel {
+class JokeFragmentViewModel extends BaseViewModel {
 
   var numItems = 20;
   var isLoadMore = false;
@@ -46,13 +46,14 @@ class ProgramFragmentViewModel extends BaseViewModel {
     NetRequest.post(NetRequestEnum.GET_JOKES, params,
 
         onSuccess:(response) {
+
           if (!isLoadMore) {
 
-            numItems += item;
-            //print("$numItems");
-            jokeModel.result.addAll(JokeModel.fromJson(response).result);
-            dataObservable.add(jokeModel);
-            isLoadMore = false;
+              numItems += item;
+              //print("$numItems");
+              jokeModel.result.addAll(JokeModel.fromJson(response).result);
+              dataObservable.add(jokeModel);
+              isLoadMore = false;
           }
         },
         onFailure:(error) {});

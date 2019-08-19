@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_app/builder/ListViewBuilder.dart';
 import 'package:flutter_app/frameworkDart/ViewModelProvider.dart';
 import 'package:flutter_app/model/JokeModel.dart';
-import 'package:flutter_app/viewModel/RecommendFragmentViewModel.dart';
+import 'package:flutter_app/viewModel/JokeFragmentViewModel.dart';
 import 'package:flutter_app/widgets/BottomIconListTile.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
@@ -16,7 +16,7 @@ class _RecommendFragmentState extends State<RecommendFragment>
     with AutomaticKeepAliveClientMixin{
 
   ScrollController _scrollController = new ScrollController();
-  RecommendFragmentViewModel _viewModel;
+  JokeFragmentViewModel _viewModel;
 
   final _titleSize = const TextStyle(fontSize: 18);
   final _subSize = const TextStyle(fontSize: 12);

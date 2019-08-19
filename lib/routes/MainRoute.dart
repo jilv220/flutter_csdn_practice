@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_app/frameworkDart/ViewModelProvider.dart';
-import 'package:flutter_app/viewModel/ProgramFragmentViewModel.dart';
-import 'package:flutter_app/viewModel/RecommendFragmentViewModel.dart';
+import 'package:flutter_app/viewModel/JokeFragmentViewModel.dart';
 import 'package:flutter_app/widgetFragment/JavaFragment.dart';
 import 'package:flutter_app/widgetFragment/ProgramFragment.dart';
 import 'package:flutter_app/widgetFragment/PythonFragment.dart';
@@ -64,16 +63,22 @@ class _MainRouteState extends State<MainRoute> with SingleTickerProviderStateMix
         controller: _tabController,
         children: <Widget>[
           ViewModelProvider(
-            viewModel: RecommendFragmentViewModel(),
+            viewModel: JokeFragmentViewModel(),
             child: RecommendFragment(),
           ),
           Text("haha"),
           ViewModelProvider(
-              viewModel: ProgramFragmentViewModel(),
+              viewModel: JokeFragmentViewModel(),
               child: ProgramFragment(),
           ),
-          PythonFragment(),
-          JavaFragment(),
+          ViewModelProvider(
+            viewModel: JokeFragmentViewModel(),
+            child: PythonFragment(),
+          ),
+          ViewModelProvider(
+            viewModel: JokeFragmentViewModel(),
+            child: JavaFragment(),
+          ),
         ],
       ),
     );
@@ -82,8 +87,7 @@ class _MainRouteState extends State<MainRoute> with SingleTickerProviderStateMix
   @override
   void dispose() {
     super.dispose();
-    RecommendFragmentViewModel().dataObservable.close();
-    ProgramFragmentViewModel().dataObservable.close();
+    JokeFragmentViewModel().dataObservable.close();
     _tabController.dispose();
   }
 }
