@@ -6,6 +6,7 @@ import 'package:flutter_app/widgetFragment/JavaFragment.dart';
 import 'package:flutter_app/widgetFragment/ProgramFragment.dart';
 import 'package:flutter_app/widgetFragment/PythonFragment.dart';
 import 'package:flutter_app/widgetFragment/RecommendFragment.dart';
+import 'package:flutter_app/routes/SearchPage.dart';
 
 class MainRoute extends StatefulWidget {
   @override
@@ -59,7 +60,9 @@ class _MainRouteState extends State<MainRoute> with SingleTickerProviderStateMix
                             ),
                           ),
                         ),
-                        onTap: () => Navigator.pushNamed(context, "align_route_page"),
+                        onTap: (){
+                          showSearch(context: context, delegate: SearchPage());
+                        }
                       ),
                     ],
                   )
