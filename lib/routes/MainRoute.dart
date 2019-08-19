@@ -26,51 +26,9 @@ class _MainRouteState extends State<MainRoute> with SingleTickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
-        title: ConstrainedBox(constraints: BoxConstraints(maxHeight: 35,maxWidth: 400),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                width: 330,
-                height: 35,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    color: Color(0xffE6E6FA),
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    border: Border.all(color: Colors.transparent),
-                  ),
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                        width: 10,
-                      ),
-                      Icon(Icons.search),
-                      GestureDetector(
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(10, 4, 0, 4),
-                          child: Text(
-                            "搜索博文/帖子/用户",
-                            style: TextStyle(
-                                fontSize: 15,
-                                color: Colors.grey
-                            ),
-                          ),
-                        ),
-                        onTap: (){
-                          showSearch(context: context, delegate: SearchPage());
-                        }
-                      ),
-                    ],
-                  )
-                ),
-              ),
-            ],
-          ),
-        ),
+        title: SearchBarWidget(),
         bottom:  PreferredSize(
             child: TabBar(
               isScrollable: true,
@@ -81,7 +39,7 @@ class _MainRouteState extends State<MainRoute> with SingleTickerProviderStateMix
             preferredSize: Size.fromHeight(40)
         ),
         actions: <Widget>[
-          Padding(padding: EdgeInsets.fromLTRB(0, 0, 20, 0),child: ImageIcon(AssetImage("assets/Icons/2dCode.png")),)  // 2dCode
+          Padding(padding: EdgeInsets.fromLTRB(0, 10, 20, 0),child: ImageIcon(AssetImage("assets/Icons/2dCode.png")),)  // 2dCode
         ],
       ),
       body: TabBarView(
@@ -115,4 +73,57 @@ class _MainRouteState extends State<MainRoute> with SingleTickerProviderStateMix
     JokeFragmentViewModel().dataObservable.close();
     _tabController.dispose();
   }
+}
+
+class SearchBarWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxHeight: 33,maxWidth: 400),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              width: 330,
+              height: 33,
+              child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    color: Color(0xffF0F8FF),
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    border: Border.all(color: Colors.transparent),
+                  ),
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        width: 10,
+                      ),
+                      Icon(Icons.search),
+                      GestureDetector(
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(10, 4, 0, 4),
+                            child: Text(
+                              "搜索博文/帖子/用户",
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.grey
+                              ),
+                            ),
+                          ),
+                          onTap: (){
+                            showSearch(context: context, delegate: SearchPage());
+                          }
+                      ),
+                    ],
+                  )
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
 }
