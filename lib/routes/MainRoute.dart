@@ -28,22 +28,44 @@ class _MainRouteState extends State<MainRoute> with SingleTickerProviderStateMix
 
     return Scaffold(
       appBar: AppBar(
-        title: ConstrainedBox(constraints: BoxConstraints(maxHeight: 30,maxWidth: 300),
-          child: TextField(
-            decoration: InputDecoration(
-                hintText: "搜索博文/帖子/用户",
-                hintStyle: TextStyle(
-                  fontSize: 15,
+        title: ConstrainedBox(constraints: BoxConstraints(maxHeight: 35,maxWidth: 400),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                width: 330,
+                height: 35,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    color: Color(0xffE6E6FA),
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    border: Border.all(color: Colors.transparent),
+                  ),
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        width: 10,
+                      ),
+                      Icon(Icons.search),
+                      GestureDetector(
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(10, 4, 0, 4),
+                          child: Text(
+                            "搜索博文/帖子/用户",
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.grey
+                            ),
+                          ),
+                        ),
+                        onTap: () => Navigator.pushNamed(context, "align_route_page"),
+                      ),
+                    ],
+                  )
                 ),
-                prefixIcon: Icon(
-                  Icons.search ,
-                  size: 18,
-                ),
-                contentPadding: EdgeInsets.symmetric(vertical: 4.0),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8))
-                ),
-            ),
+              ),
+            ],
           ),
         ),
         bottom:  PreferredSize(
