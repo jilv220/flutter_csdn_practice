@@ -10,6 +10,7 @@ class BottomIconListTile extends StatelessWidget {
   final String subtitleContent;
   final TextStyle subtitleStyle;
   final List<Widget> bottomIconContent;
+  final onTap;
 
 
   BottomIconListTile ({
@@ -18,31 +19,35 @@ class BottomIconListTile extends StatelessWidget {
     this.contentPadding,
     @required this.iconPadding,
     @required this.subtitlePadding,
-    this.subtitleContent,
-    this.subtitleStyle,
-    this.bottomIconContent,
+    this.subtitleContent = "",
+    this.subtitleStyle = const TextStyle(),
+    this.bottomIconContent = const <Widget>[],
+    this.onTap,
 });
 
   Widget build(BuildContext context) {
 
-    return ListTile(
-      title: Text(titleContent,style: titleStyle),
-      contentPadding: contentPadding,
-      subtitle: Padding(
-          padding: subtitlePadding,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(subtitleContent,style: subtitleStyle),
-              Padding(
-                padding: iconPadding,
-                child: Row(
-                  children: bottomIconContent,
-                ),
-              )
-            ],
-          )
+    return GestureDetector(
+      child: ListTile(
+        title: Text(titleContent,style: titleStyle),
+        contentPadding: contentPadding,
+        subtitle: Padding(
+            padding: subtitlePadding,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(subtitleContent,style: subtitleStyle),
+                Padding(
+                  padding: iconPadding,
+                  child: Row(
+                    children: bottomIconContent,
+                  ),
+                )
+              ],
+            )
+        ),
       ),
+      onTap: onTap,
     );
   }
 }

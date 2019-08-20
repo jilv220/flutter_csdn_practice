@@ -1,11 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/widgets/BottomIconListTile.dart';
 import 'package:flutter_app/widgets/RoundRectChip.dart';
-import 'package:path/path.dart';
+import 'package:rxdart/rxdart.dart';
 
 class SearchPage extends SearchDelegate<String> {
 
+  //模拟数据
+  var recentSuggest;
+
+  SearchPage({
+    this.recentSuggest,
+});
+
+  List<String> chipConfig1 = ["程序人生","人工智能","大数据","区块链"];
+  List<String> chipConfig2 = ["数据库","游戏开发","计算机基础","研发管理"];
+  List<String> chipConfig3 = ["前端","移动开发","编程语言","框架"];
+  List<String> chipConfig4 = ["运维","物联网","音视频开发","安全"];
+
+  // ignore: close_sinks
+  BehaviorSubject<List<String>> dataObservable = BehaviorSubject();
+  Stream<List<String>> dataStream;
+
   @override
   List<Widget> buildActions(BuildContext context) {
+
     return [
       GestureDetector(
         child: Padding(
@@ -19,6 +37,7 @@ class SearchPage extends SearchDelegate<String> {
 
   @override
   Widget buildLeading(BuildContext context) {
+
     return IconButton(
       icon: AnimatedIcon(
           icon: AnimatedIcons.menu_arrow, progress: transitionAnimation),
@@ -48,76 +67,23 @@ class SearchPage extends SearchDelegate<String> {
   }
 
   @override
-  Widget buildSuggestions(BuildContext context) {   // must not return null !!!!
+  Widget buildSuggestions(BuildContext context) {// must not return null !!
 
-    const searchList = [
-      "lao-老王",
-      "lao-老张",
-      "xiao-小王",
-      "xiao-小张"
-    ];
+    return StreamBuilder(
+      stream: dataStream,
+      builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
 
-    const recentSuggest = [
-      "马云-1",
-      "马化腾-2"
-    ];
-
-    final suggestionList = query.isEmpty?
-    recentSuggest :searchList.where((input) => input.startsWith(query)).toList();
-
-    List<String> chipConfig1 = ["程序人生","人工智能","大数据","区块链"];
-    List<String> chipConfig2 = ["数据库","游戏开发","计算机基础","研发管理"];
-    List<String> chipConfig3 = ["前端","移动开发","编程语言","框架"];
-    List<String> chipConfig4 = ["运维","物联网","音视频开发","安全"];
-
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            height: 20,
-          ),
-          Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                      "热门搜索",
-                      style: TextStyle(fontSize: 17)
-                  ),
-                  Container(
-                    height: 10,
-                  ),
-                  buildChips(context, chipConfig1),
-                  buildChips(context, chipConfig2),
-                  buildChips(context, chipConfig3), 
-                  buildChips(context, chipConfig4),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                          "搜索历史",
-                          style: TextStyle(fontSize: 17)
-                      ),
-                      Expanded(
-                        child: Container(),
-                      ),
-                      FlatButton(
-                        child: Text(
-                            "全部清空",
-                            style:TextStyle(fontSize: 15)),
-                        onPressed: () {
-
-                        },
-                      ),
-                    ],
-                  )
-                ],
-              )
-          ),
-        ],
-      ),
+        return ListView.builder(
+          itemCount: recentSuggest.length ,
+          itemBuilder: (BuildContext context, int index) {
+            if (index == 0 && buildBanner != null) {
+              return buildBanner(context);
+            } else {
+              return buildRow(context,index);
+            }
+          },
+        );
+      },
     );
   }
 
@@ -128,7 +94,73 @@ class SearchPage extends SearchDelegate<String> {
 
   void onPressed(BuildContext context, List<String> labels, int index) {
     query = labels[index];
+    recentSuggest.add(labels[index]);
     this.showResults(context);
+  }
+
+  Widget buildRow(BuildContext context,int i) {
+    return BottomIconListTile(
+      titleContent: recentSuggest[i],
+      titleStyle: TextStyle(fontSize: 15),
+      subtitlePadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+      iconPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+      onTap: () {
+        query = recentSuggest[i];
+        this.showResults(context);
+      },
+    );
+  }
+
+  Widget buildBanner(BuildContext context) {
+    return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            height: 20,
+          ),
+          Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                        "热门搜索",
+                        style: TextStyle(fontSize: 17)
+                    ),
+                    Container(
+                      height: 10,
+                    ),
+                    buildChips(context, chipConfig1),
+                    buildChips(context, chipConfig2),
+                    buildChips(context, chipConfig3),
+                    buildChips(context, chipConfig4),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                            "搜索历史",
+                            style: TextStyle(fontSize: 17)
+                        ),
+                        Expanded(
+                          child: Container(),
+                        ),
+                        FlatButton(
+                          child: Text(
+                              "全部清空",
+                              style:TextStyle(fontSize: 15)),
+                          onPressed: () {
+                            recentSuggest.clear();
+                            recentSuggest.add("placeholder");
+                            dataObservable.add(recentSuggest);
+                          },
+                        ),
+                      ],
+                    )
+                  ]
+              )
+          ),
+        ]
+    );
   }
 
   Widget buildChips(BuildContext context, List<String> labels) {

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-class ListViewBuilder<T> {
+class ListItemBuilder<T> {
 
+  // ignore: missing_return
   Widget build(int index,AsyncSnapshot<T> snapshot,{buildRow(int index,AsyncSnapshot<T> snapshot), buildBanner()}) {
 
     if (index == 0 && buildBanner != null) {

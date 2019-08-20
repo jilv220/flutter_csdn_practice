@@ -17,18 +17,21 @@ class _MainRouteState extends State<MainRoute> with SingleTickerProviderStateMix
 
   TabController _tabController;
   List tabs = ["推荐","关注","程序人生","Python","Java"];
+  List recentSuggest;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: tabs.length,vsync: this);   //ticker must be init in initState()
+    _tabController = TabController(length: tabs.length,vsync: this);//ticker must be init in initState()
+    recentSuggest = ["JOJO", "DIO", "Bruno", "Felix"];  //load data
+    recentSuggest.insert(0, "placeholder");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: SearchBarWidget(),
+        title: buildSearchBar(context),
         bottom:  PreferredSize(
             child: TabBar(
               isScrollable: true,
@@ -73,15 +76,12 @@ class _MainRouteState extends State<MainRoute> with SingleTickerProviderStateMix
     JokeFragmentViewModel().dataObservable.close();
     _tabController.dispose();
   }
-}
 
-class SearchBarWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
+  Widget buildSearchBar(BuildContext context) {
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
       child: ConstrainedBox(
-        constraints: BoxConstraints(maxHeight: 33,maxWidth: 400),
+        constraints: BoxConstraints(maxHeight: 33, maxWidth: 400),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
@@ -112,8 +112,10 @@ class SearchBarWidget extends StatelessWidget {
                               ),
                             ),
                           ),
-                          onTap: (){
-                            showSearch(context: context, delegate: SearchPage());
+                          onTap: () {
+                            showSearch(context: context,
+                                delegate: SearchPage(
+                                    recentSuggest: recentSuggest));
                           }
                       ),
                     ],
@@ -127,3 +129,6 @@ class SearchBarWidget extends StatelessWidget {
   }
 
 }
+
+
+

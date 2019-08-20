@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_app/builder/ListViewBuilder.dart';
+import 'package:flutter_app/builder/ListItemBuilder.dart';
 import 'package:flutter_app/frameworkDart/ViewModelProvider.dart';
 import 'package:flutter_app/model/JokeModel.dart';
 import 'package:flutter_app/viewModel/JokeFragmentViewModel.dart';
@@ -66,7 +66,7 @@ class _PythonFragmentState extends State<PythonFragment>
                     },
                     itemBuilder: (BuildContext context, int i) {
 
-                      return ListViewBuilder<JokeModel>().build(i, snapshot, buildRow: _buildRow);
+                      return ListItemBuilder<JokeModel>().build(i, snapshot, buildRow: _buildRow);
                     },
                     controller: _scrollController,
                   ),
