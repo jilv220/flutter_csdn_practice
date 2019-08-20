@@ -32,19 +32,18 @@ class SearchRouteState extends State<SearchRoute> {
       appBar: AppBar(
         title: buildSearchBar(context),
         automaticallyImplyLeading: false,
+        titleSpacing: -10,
         leading: Padding(
-          padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+          padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
           child: GestureDetector(
             child: Icon(Icons.arrow_back_ios),
-            onTap: () {
-              Navigator.pop(context);
-            },
+            onTap: () => Navigator.pop(context)
           )
         ),
         actions: <Widget>[
           GestureDetector(
             child: Padding(
-              padding: EdgeInsets.fromLTRB(0, 15, 15, 0),
+              padding: EdgeInsets.fromLTRB(15, 15, 15, 0),
               child: Text("搜索", style: TextStyle(fontSize: 18)),
             ),
             onTap: () {
@@ -133,10 +132,10 @@ class SearchRouteState extends State<SearchRoute> {
 
   Widget buildSearchBar(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(0, 0, 30, 0),
+      padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
       child: ConstrainedBox(
           constraints: BoxConstraints(
-              maxHeight: 30,
+              maxHeight: 50,
               maxWidth: 300
           ),
           child: TextField(
@@ -144,8 +143,12 @@ class SearchRouteState extends State<SearchRoute> {
             decoration: InputDecoration(
               hintText: "",
               hintStyle: TextStyle(
-                fontSize: 15,
+                fontSize: 23,
               ),
+              filled: true,
+              fillColor: Color(0xffF0F8FF),
+              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
+              disabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
               contentPadding: EdgeInsets.symmetric(vertical: 4.0),
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(8))
