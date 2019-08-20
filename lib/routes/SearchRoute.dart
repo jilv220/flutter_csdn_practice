@@ -160,6 +160,12 @@ class SearchRouteState extends State<SearchRoute> {
           ),
           child: TextField(
             controller: controller,
+            onSubmitted: (String content) {
+              setState(() {
+                widget.recentSuggest.add(content);
+                //go to result
+              });
+            },
             autofocus: true,
             decoration: InputDecoration(
               hintText: "",
