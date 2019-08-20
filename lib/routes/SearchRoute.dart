@@ -1,112 +1,73 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/widgets/BottomIconListTile.dart';
 import 'package:flutter_app/widgets/RoundRectChip.dart';
-import 'package:rxdart/rxdart.dart';
 
-class SearchPage extends SearchDelegate<String> {
+class SearchRoute extends StatefulWidget{
 
-  //模拟数据
-  var recentSuggest;
+  final List recentSuggest;
 
-  SearchPage({
+  SearchRoute({
     this.recentSuggest,
-});
+  });
+
+  @override
+  State<StatefulWidget> createState() {
+    return SearchRouteState();
+  }
+}
+
+class SearchRouteState extends State<SearchRoute> {
 
   List<String> chipConfig1 = ["程序人生","人工智能","大数据","区块链"];
   List<String> chipConfig2 = ["数据库","游戏开发","计算机基础","研发管理"];
   List<String> chipConfig3 = ["前端","移动开发","编程语言","框架"];
   List<String> chipConfig4 = ["运维","物联网","音视频开发","安全"];
 
-  // ignore: close_sinks
-  BehaviorSubject<List<String>> dataObservable = BehaviorSubject();
-  Stream<List<String>> dataStream;
+  String query;
 
   @override
-  List<Widget> buildActions(BuildContext context) {
+  Widget build(BuildContext context) {
 
-    return [
-      GestureDetector(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(0, 15, 15, 0),
-          child: Text("搜索", style: TextStyle(fontSize: 18)),
-        ),
-        onTap: () => this.showResults(context),
+    return Scaffold(
+      appBar: AppBar(
+        title: buildSearchBar(context),
+        automaticallyImplyLeading: false,
+        leading: Icon(Icons.arrow_back_ios),
+        actions: <Widget>[
+          GestureDetector(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(0, 15, 15, 0),
+              child: Text("搜索", style: TextStyle(fontSize: 18)),
+            ),
+            onTap: () {
+              widget.recentSuggest.add(query);
+              //go to result
+            },
+          ),
+        ],
       ),
-    ];
-  }
-
-  @override
-  Widget buildLeading(BuildContext context) {
-
-    return IconButton(
-      icon: AnimatedIcon(
-          icon: AnimatedIcons.menu_arrow, progress: transitionAnimation),
-      onPressed: () {
-        if (query.isEmpty) {
-          close(context, null);
-        } else {
-          query = "";
-          showSuggestions(context);
-        }
-      },
+      body: ListView.builder(
+        itemCount: widget.recentSuggest.length ,
+        itemBuilder: (BuildContext context, int index) {
+          if (index == 0 && buildBanner != null) {
+            return buildBanner(context);
+          } else {
+            return buildRow(context,index);
+          }
+        },
+      )
     );
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    return Container(
-      width: 100,
-      height: 100,
-      child: Card(
-        color: Colors.pink,
-        child: Center(
-          child: Text(query),
-        ),
-      ),
-    );
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {// must not return null !!
-
-    return StreamBuilder(
-      stream: dataStream,
-      builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
-
-        return ListView.builder(
-          itemCount: recentSuggest.length ,
-          itemBuilder: (BuildContext context, int index) {
-            if (index == 0 && buildBanner != null) {
-              return buildBanner(context);
-            } else {
-              return buildRow(context,index);
-            }
-          },
-        );
-      },
-    );
-  }
-
-  @override
-  ThemeData appBarTheme(BuildContext context) {
-    return super.appBarTheme(context);
-  }
-
-  void onPressed(BuildContext context, List<String> labels, int index) {
-    query = labels[index];
-    recentSuggest.add(labels[index]);
-    this.showResults(context);
   }
 
   Widget buildRow(BuildContext context,int i) {
     return BottomIconListTile(
-      titleContent: recentSuggest[i],
+      titleContent: widget.recentSuggest[i],
       titleStyle: TextStyle(fontSize: 15),
       subtitlePadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
       iconPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
       onTap: () {
-        query = recentSuggest[i];
-        this.showResults(context);
+        query = widget.recentSuggest[i];
+        // go to resultPage
       },
     );
   }
@@ -149,9 +110,8 @@ class SearchPage extends SearchDelegate<String> {
                               "全部清空",
                               style:TextStyle(fontSize: 15)),
                           onPressed: () {
-                            recentSuggest.clear();
-                            recentSuggest.add("placeholder");
-                            dataObservable.add(recentSuggest);
+                            widget.recentSuggest.clear();
+                            widget.recentSuggest.add("placeholder");
                           },
                         ),
                       ],
@@ -161,6 +121,28 @@ class SearchPage extends SearchDelegate<String> {
           ),
         ]
     );
+  }
+
+  Widget buildSearchBar(BuildContext context) {
+    return ConstrainedBox(
+        constraints: BoxConstraints(
+            maxHeight: 30,
+            maxWidth: 300
+        ),
+        child: TextField(
+          autofocus: true,
+          decoration: InputDecoration(
+            hintText: "",
+            hintStyle: TextStyle(
+                fontSize: 15,
+            ),
+            contentPadding: EdgeInsets.symmetric(vertical: 4.0),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(8))
+            ),
+          ),
+        )
+      );
   }
 
   Widget buildChips(BuildContext context, List<String> labels) {
@@ -221,5 +203,11 @@ class SearchPage extends SearchDelegate<String> {
         ),
       ],
     );
+  }
+
+  void onPressed(BuildContext context, List<String> labels, int index) {
+    query = labels[index];
+    widget.recentSuggest.add(labels[index]);     //add label to recentSuggest List
+    //go to result
   }
 }

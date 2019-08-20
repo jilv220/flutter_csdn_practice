@@ -6,7 +6,7 @@ import 'package:flutter_app/widgetFragment/JavaFragment.dart';
 import 'package:flutter_app/widgetFragment/ProgramFragment.dart';
 import 'package:flutter_app/widgetFragment/PythonFragment.dart';
 import 'package:flutter_app/widgetFragment/RecommendFragment.dart';
-import 'package:flutter_app/routes/SearchPage.dart';
+import 'SearchRoute.dart';
 
 class MainRoute extends StatefulWidget {
   @override
@@ -113,9 +113,9 @@ class _MainRouteState extends State<MainRoute> with SingleTickerProviderStateMix
                             ),
                           ),
                           onTap: () {
-                            showSearch(context: context,
-                                delegate: SearchPage(
-                                    recentSuggest: recentSuggest));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) {
+                              return SearchRoute(recentSuggest: recentSuggest);
+                            }));
                           }
                       ),
                     ],

@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_app/routes/AlignRoute.dart';
 import 'package:flutter_app/routes/CupertinoRoute.dart';
 import 'package:flutter_app/routes/MainRoute.dart';
+import 'package:flutter_app/routes/SearchRoute.dart';
 import 'package:flutter_app/routes/SwitchAndCheckBoxTestRoute.dart';
 import 'package:flutter_app/routes/TipRoute.dart';
 
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
         "cupertino_page" : (context) => CupertinoRoute(),
         "switch_and_checkbox_test_page" : (context) => SwitchAndCheckBoxTestRoute(),
         "align_route_page" :(context) => AlignRoute(),
+        "search_page" :(context) => SearchRoute(),
       },
     );
   }
