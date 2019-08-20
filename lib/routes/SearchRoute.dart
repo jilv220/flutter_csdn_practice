@@ -32,7 +32,15 @@ class SearchRouteState extends State<SearchRoute> {
       appBar: AppBar(
         title: buildSearchBar(context),
         automaticallyImplyLeading: false,
-        leading: Icon(Icons.arrow_back_ios),
+        leading: Padding(
+          padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+          child: GestureDetector(
+            child: Icon(Icons.arrow_back_ios),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          )
+        ),
         actions: <Widget>[
           GestureDetector(
             child: Padding(
@@ -124,25 +132,28 @@ class SearchRouteState extends State<SearchRoute> {
   }
 
   Widget buildSearchBar(BuildContext context) {
-    return ConstrainedBox(
-        constraints: BoxConstraints(
-            maxHeight: 30,
-            maxWidth: 300
-        ),
-        child: TextField(
-          autofocus: true,
-          decoration: InputDecoration(
-            hintText: "",
-            hintStyle: TextStyle(
-                fontSize: 15,
-            ),
-            contentPadding: EdgeInsets.symmetric(vertical: 4.0),
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8))
-            ),
+    return Padding(
+      padding: EdgeInsets.fromLTRB(0, 0, 30, 0),
+      child: ConstrainedBox(
+          constraints: BoxConstraints(
+              maxHeight: 30,
+              maxWidth: 300
           ),
-        )
-      );
+          child: TextField(
+            autofocus: true,
+            decoration: InputDecoration(
+              hintText: "",
+              hintStyle: TextStyle(
+                fontSize: 15,
+              ),
+              contentPadding: EdgeInsets.symmetric(vertical: 4.0),
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(8))
+              ),
+            ),
+          )
+      ),
+    );
   }
 
   Widget buildChips(BuildContext context, List<String> labels) {

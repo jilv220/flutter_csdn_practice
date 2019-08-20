@@ -32,6 +32,7 @@ class _MainRouteState extends State<MainRoute> with SingleTickerProviderStateMix
     return Scaffold(
       appBar: AppBar(
         title: buildSearchBar(context),
+        automaticallyImplyLeading: false,
         bottom:  PreferredSize(
             child: TabBar(
               isScrollable: true,
