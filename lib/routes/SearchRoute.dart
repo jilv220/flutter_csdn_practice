@@ -24,6 +24,13 @@ class SearchRouteState extends State<SearchRoute> {
   List<String> chipConfig4 = ["运维","物联网","音视频开发","安全"];
 
   String query;
+  TextEditingController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = TextEditingController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +54,10 @@ class SearchRouteState extends State<SearchRoute> {
               child: Text("搜索", style: TextStyle(fontSize: 18)),
             ),
             onTap: () {
-              widget.recentSuggest.add(query);
+
+              setState(() {
+                widget.recentSuggest.add(controller.text);
+              });
               //go to result
             },
           ),
@@ -69,11 +79,11 @@ class SearchRouteState extends State<SearchRoute> {
   Widget buildRow(BuildContext context,int i) {
     return BottomIconListTile(
       titleContent: widget.recentSuggest[i],
-      titleStyle: TextStyle(fontSize: 15),
+      titleStyle: TextStyle(fontSize: 15, color: Colors.grey),
       subtitlePadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
       iconPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
       onTap: () {
-        query = widget.recentSuggest[i];
+        controller.text = widget.recentSuggest[i];
         // go to resultPage
       },
     );
@@ -107,7 +117,9 @@ class SearchRouteState extends State<SearchRoute> {
                       children: <Widget>[
                         Text(
                             "搜索历史",
-                            style: TextStyle(fontSize: 17)
+                            style: TextStyle(
+                                fontSize: 17
+                            )
                         ),
                         Expanded(
                           child: Container(),
@@ -115,10 +127,18 @@ class SearchRouteState extends State<SearchRoute> {
                         FlatButton(
                           child: Text(
                               "全部清空",
-                              style:TextStyle(fontSize: 15)),
+                              style:TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.grey
+                              )
+                          ),
                           onPressed: () {
-                            widget.recentSuggest.clear();
-                            widget.recentSuggest.add("placeholder");
+
+                            setState(() {
+                              widget.recentSuggest.clear();
+                              widget.recentSuggest.add("placeholder");
+                            });
+
                           },
                         ),
                       ],
@@ -139,6 +159,7 @@ class SearchRouteState extends State<SearchRoute> {
               maxWidth: 300
           ),
           child: TextField(
+            controller: controller,
             autofocus: true,
             decoration: InputDecoration(
               hintText: "",
@@ -220,8 +241,11 @@ class SearchRouteState extends State<SearchRoute> {
   }
 
   void onPressed(BuildContext context, List<String> labels, int index) {
-    query = labels[index];
-    widget.recentSuggest.add(labels[index]);     //add label to recentSuggest List
+
+    controller.text = labels[index];
+    setState(() {
+      widget.recentSuggest.add(labels[index]);
+    });
     //go to result
   }
 }
