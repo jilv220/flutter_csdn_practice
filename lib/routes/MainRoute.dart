@@ -6,6 +6,7 @@ import 'package:flutter_app/widgetFragment/JavaFragment.dart';
 import 'package:flutter_app/widgetFragment/ProgramFragment.dart';
 import 'package:flutter_app/widgetFragment/PythonFragment.dart';
 import 'package:flutter_app/widgetFragment/RecommendFragment.dart';
+import 'package:flutter_app/widgetFragment/StarFragment.dart';
 import 'SearchRoute.dart';
 
 class MainRoute extends StatefulWidget {
@@ -53,7 +54,7 @@ class _MainRouteState extends State<MainRoute> with SingleTickerProviderStateMix
             viewModel: JokeFragmentViewModel(),
             child: RecommendFragment(),
           ),
-          Text("haha"),
+          StarFragment(),
           ViewModelProvider(
               viewModel: JokeFragmentViewModel(),
               child: ProgramFragment(),

@@ -50,6 +50,10 @@ flutter:
     - assets/Icons/Study.png
     - assets/Icons/Blink.png
     - assets/Icons/Forum.png
+    - assets/Images/Monkey.png
+    - assets/Images/Jojo.jpg
+    - assets/Images/Dio.jpg
+    - assets/Images/Jotaro.jpg
 
   # To add assets to your application, add an assets section, like this:
   # assets:
