@@ -10,8 +10,9 @@ class BottomIconListTile extends StatelessWidget {
   final String subtitleContent;
   final TextStyle subtitleStyle;
   final List<Widget> bottomIconContent;
+  final Widget leading;
+  final Widget trailing;
   final onTap;
-
 
   BottomIconListTile ({
     this.titleContent,
@@ -23,12 +24,16 @@ class BottomIconListTile extends StatelessWidget {
     this.subtitleStyle = const TextStyle(),
     this.bottomIconContent = const <Widget>[],
     this.onTap,
+    this.leading,
+    this.trailing,
 });
 
   Widget build(BuildContext context) {
 
     return GestureDetector(
       child: ListTile(
+        leading: leading,
+        trailing: trailing,
         title: Text(titleContent,style: titleStyle),
         contentPadding: contentPadding,
         subtitle: Padding(

@@ -78,6 +78,20 @@ class SearchRouteState extends State<SearchRoute> {
 
   Widget buildRow(BuildContext context,int i) {
     return BottomIconListTile(
+      leading: Padding(
+        padding: EdgeInsets.fromLTRB(0, 1, 0, 0),
+        child: Icon(Icons.search,
+            color: Colors.grey,
+            size: 18
+        ),
+      ),
+      trailing: Padding(
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 21),
+        child: Icon(Icons.close,
+            color: Colors.grey,
+            size: 18
+        ),
+      ),
       titleContent: widget.recentSuggest[i],
       titleStyle: TextStyle(fontSize: 15, color: Colors.grey),
       subtitlePadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
